@@ -414,6 +414,6 @@ MIT — see [LICENSE](LICENSE) for details.
 
 <p align="center">
   <a href="https://buymeacoffee.com/devanshkaria88">
-    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=devanshkaria88&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" alt="Buy Me A Coffee" />
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50" width="217" />
   </a>
 </p>

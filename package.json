@@ -1,6 +1,6 @@
 {
   "name": "depshield-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "MCP server for real-time dependency security — checks packages against CVE databases before your AI coding agent installs them. Works with Cursor, Claude Code, Windsurf, and any MCP-compatible IDE.",
   "main": "dist/index.js",
