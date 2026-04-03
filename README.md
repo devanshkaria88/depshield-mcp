@@ -1,21 +1,41 @@
-# DepShield MCP
+<p align="center">
+  <img src="https://img.shields.io/badge/🛡️_DepShield-MCP_Server-blue?style=for-the-badge" alt="DepShield MCP" />
+</p>
 
-A real-time dependency security server for AI coding agents. DepShield intercepts every package your agent tries to install, verifies it exists, checks it against CVE databases, and blocks vulnerable or hallucinated dependencies before they touch your codebase.
+<h3 align="center">Real-time dependency security for AI coding agents</h3>
 
-Works with **any MCP-compatible IDE**: Cursor, Claude Code, Windsurf, Antigravity, Cline, and more.
+<p align="center">
+  <a href="https://www.npmjs.com/package/depshield-mcp"><img src="https://img.shields.io/npm/v/depshield-mcp?style=flat-square&color=cb3837&label=npm" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/depshield-mcp"><img src="https://img.shields.io/npm/dm/depshield-mcp?style=flat-square&color=blue&label=downloads" alt="npm downloads" /></a>
+  <a href="https://github.com/devanshkaria88/depshield-mcp/blob/main/LICENSE"><img src="https://img.shields.io/github/license/devanshkaria88/depshield-mcp?style=flat-square" alt="license" /></a>
+  <a href="https://github.com/devanshkaria88/depshield-mcp"><img src="https://img.shields.io/github/stars/devanshkaria88/depshield-mcp?style=flat-square" alt="GitHub stars" /></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="node version" />
+</p>
 
-## Why
+<p align="center">
+  DepShield intercepts every package your agent tries to install, verifies it exists, checks it against CVE databases, and blocks vulnerable or hallucinated dependencies — <strong>before they touch your codebase</strong>.
+</p>
+
+<p align="center">
+  Works with <strong>Cursor</strong> · <strong>Claude Code</strong> · <strong>Windsurf</strong> · <strong>Antigravity</strong> · <strong>Cline</strong> · any MCP-compatible IDE
+</p>
+
+---
+
+## 🤔 Why
 
 AI coding agents pull packages from stale training data. They install outdated versions with known CVEs. They hallucinate package names that don't exist, opening the door to typosquatting attacks. They default to deprecated libraries when better alternatives exist.
 
-There's no checkpoint between "agent decides to use a package" and "package lands in your project." DepShield is that checkpoint.
+There's no checkpoint between "agent decides to use a package" and "package lands in your project." **DepShield is that checkpoint.**
 
-## What It Does
+---
+
+## ⚡ What It Does
 
 Seven security tools exposed over the Model Context Protocol:
 
 | Tool | What it does |
-|------|-------------|
+|:-----|:-------------|
 | `check_dependency` | Pre-install gate — verifies a package exists on the registry and has no known CVEs. Your agent calls this before every install. |
 | `audit_project` | Scans an entire `package.json` or `requirements.txt` and returns a full vulnerability audit report. |
 | `find_safe_version` | Finds the newest version of a package with zero known vulnerabilities. |
@@ -26,11 +46,11 @@ Seven security tools exposed over the Model Context Protocol:
 
 Plus a `depshield://status` resource and a `security_review` prompt template for guided full-project audits.
 
-**Zero API keys required.** DepShield uses free, open APIs: [npm Registry](https://registry.npmjs.org), [OSV.dev](https://osv.dev) (Google's open vulnerability database), and [PyPI](https://pypi.org).
+> **Zero API keys required.** DepShield uses free, open APIs: [npm Registry](https://registry.npmjs.org), [OSV.dev](https://osv.dev) (Google's open vulnerability database), and [PyPI](https://pypi.org).
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Option 1: npx (no install)
 
@@ -47,9 +67,10 @@ npm run build
 
 ---
 
-## IDE Setup
+## 🔌 IDE Setup
 
-### Cursor
+<details>
+<summary><strong>Cursor</strong></summary>
 
 Add to `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project-level):
 
@@ -79,7 +100,10 @@ Or if you cloned the repo locally:
 
 Optionally, copy `.cursor/rules/dep-shield.mdc` into your project's `.cursor/rules/` directory. This rule forces the Cursor agent to call `check_dependency` before every package install.
 
-### Claude Code
+</details>
+
+<details>
+<summary><strong>Claude Code</strong></summary>
 
 ```bash
 claude mcp add depshield -- npx depshield-mcp
@@ -91,7 +115,10 @@ Or from a cloned repo:
 claude mcp add depshield -- node /absolute/path/to/depshield-mcp/dist/index.js
 ```
 
-### Windsurf
+</details>
+
+<details>
+<summary><strong>Windsurf</strong></summary>
 
 Add to your Windsurf MCP configuration:
 
@@ -106,7 +133,10 @@ Add to your Windsurf MCP configuration:
 }
 ```
 
-### Any MCP-compatible tool
+</details>
+
+<details>
+<summary><strong>Any MCP-compatible tool</strong></summary>
 
 DepShield uses stdio transport. Any tool that supports MCP over stdio can use it:
 
@@ -114,112 +144,168 @@ DepShield uses stdio transport. Any tool that supports MCP over stdio can use it
 npx depshield-mcp
 ```
 
+</details>
+
 ---
 
-## Usage Examples
+## 💡 Usage Examples
 
 Once connected, your AI agent has access to all seven tools. Try these prompts:
 
-**Pre-install check (automatic with the .mdc rule):**
+<table>
+<tr>
+<td width="50%">
+
+**Pre-install check** *(automatic with .mdc rule)*
+
 > "Add lodash for deep cloning"
->
-> → Agent calls `check_dependency` → finds CVE → auto-upgrades to safe version
 
-**Block hallucinated packages:**
+Agent calls `check_dependency` → finds CVE → auto-upgrades to safe version
+
+</td>
+<td width="50%">
+
+**Block hallucinated packages**
+
 > "Install react-super-utils-pro for state management"
->
-> → Agent calls `check_dependency` → package doesn't exist → blocks install, suggests alternatives
 
-**Full project audit:**
+Agent calls `check_dependency` → package doesn't exist → blocks install, suggests alternatives
+
+</td>
+</tr>
+<tr>
+<td>
+
+**Full project audit**
+
 > "Run a security audit on this project's dependencies"
->
-> → Agent calls `audit_project` on `package.json` → returns full vulnerability report with severity breakdown
 
-**Package health check:**
+Agent calls `audit_project` on `package.json` → returns full vulnerability report
+
+</td>
+<td>
+
+**Package health check**
+
 > "Is this package well maintained?"
->
-> → Agent calls `check_npm_health` → returns health score (0–100) with breakdown
 
-**Supply chain deep scan:**
+Agent calls `check_npm_health` → returns health score (0–100) with breakdown
+
+</td>
+</tr>
+<tr>
+<td>
+
+**Supply chain deep scan**
+
 > "Deep scan express for transitive vulnerabilities"
->
-> → Agent calls `deep_scan` → scans dependency tree, flags suspicious patterns (new deps, typosquats, low-download packages)
 
-**Advisory deep dive:**
+Agent calls `deep_scan` → scans dependency tree, flags suspicious patterns
+
+</td>
+<td>
+
+**Advisory deep dive**
+
 > "Tell me more about GHSA-jf85-cpcp-j695"
->
-> → Agent calls `get_advisory_detail` → returns full CVE details, affected versions, remediation
+
+Agent calls `get_advisory_detail` → returns full CVE details, remediation info
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Tools Reference
+## 📖 Tools Reference
 
-### `check_dependency`
+<details>
+<summary><code>check_dependency</code> — Pre-install gate</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `name` | string | yes | — | Package name (e.g., `lodash`, `express`) |
 | `version` | string | no | latest | Specific version to check |
 | `ecosystem` | `npm` \| `pypi` | no | `npm` | Package ecosystem |
 
-Returns: `✅ SAFE`, `⚠️ VULNERABLE` (with fix version), `🚫 BLOCKED` (doesn't exist), or `⚠️ CANNOT VERIFY` (registry unreachable).
+**Returns:** `✅ SAFE`, `⚠️ VULNERABLE` (with fix version), `🚫 BLOCKED` (doesn't exist), or `⚠️ CANNOT VERIFY` (registry unreachable).
 
-### `audit_project`
+</details>
+
+<details>
+<summary><code>audit_project</code> — Full manifest audit</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `filePath` | string | yes | — | Path to `package.json` or `requirements.txt` |
 | `includeDevDependencies` | boolean | no | `true` | Include devDependencies in scan |
 
-Returns: Full audit report with summary stats, per-dependency vulnerability breakdown, severity counts, and risk verdict.
+**Returns:** Full audit report with summary stats, per-dependency vulnerability breakdown, severity counts, and risk verdict.
 
-### `find_safe_version`
+</details>
+
+<details>
+<summary><code>find_safe_version</code> — Safe version finder</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `name` | string | yes | — | Package name |
 | `ecosystem` | `npm` \| `pypi` | no | `npm` | Package ecosystem |
 
-Returns: The newest stable version with zero known vulnerabilities, with comparison of all checked versions.
+**Returns:** The newest stable version with zero known vulnerabilities, with comparison of all checked versions.
 
-### `get_advisory_detail`
+</details>
+
+<details>
+<summary><code>get_advisory_detail</code> — CVE/GHSA deep dive</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `vulnId` | string | yes | — | Vulnerability ID (e.g., `GHSA-jf85-cpcp-j695`, `CVE-2021-23337`) |
 
-Returns: Full advisory with summary, severity, CVSS score, affected versions, fix versions, and reference links.
+**Returns:** Full advisory with summary, severity, CVSS score, affected versions, fix versions, and reference links.
 
-### `check_npm_health`
+</details>
+
+<details>
+<summary><code>check_npm_health</code> — Package health scoring</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `name` | string | yes | — | npm package name |
 
-Returns: Health report card (0–100 score) based on: publish recency, weekly downloads, license, repository presence, deprecation status, and maintainer count.
+**Returns:** Health report card (0–100 score) based on: publish recency, weekly downloads, license, repository presence, deprecation status, and maintainer count.
 
-### `suggest_alternative`
+</details>
+
+<details>
+<summary><code>suggest_alternative</code> — Alternative package finder</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `name` | string | yes | — | Package to find alternatives for |
 | `reason` | string | no | — | Why an alternative is needed |
 
-Returns: Top 3 alternative packages with downloads, npm score, and publish date.
+**Returns:** Top 3 alternative packages with downloads, npm score, and publish date.
 
-### `deep_scan`
+</details>
+
+<details>
+<summary><code>deep_scan</code> — Transitive dependency scanner</summary>
 
 | Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
+|:----------|:-----|:---------|:--------|:------------|
 | `name` | string | yes | — | Package to deep scan |
 | `version` | string | no | latest | Specific version to scan |
 | `depth` | `1` \| `2` | no | `1` | 1 = direct deps, 2 = deps of deps |
 
-Returns: Dependency tree with vulnerability flags, suspicious pattern detection (newly added deps, nonexistent packages, low-download typosquat candidates), and risk verdict.
+**Returns:** Dependency tree with vulnerability flags, suspicious pattern detection (newly added deps, nonexistent packages, low-download typosquat candidates), and risk verdict.
+
+</details>
 
 ---
 
-## Cursor Rule (Optional)
+## 🔒 Cursor Rule (Optional)
 
 The `.cursor/rules/dep-shield.mdc` file included in this repo forces the Cursor agent to automatically call `check_dependency` before every package install. Copy it to your project:
 
@@ -232,7 +318,7 @@ This turns DepShield from a tool the agent _can_ use into a gate the agent _must
 
 ---
 
-## Testing
+## 🧪 Testing
 
 **MCP Inspector** (interactive UI for testing tools):
 
@@ -254,12 +340,12 @@ printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion
 
 ---
 
-## APIs Used
+## 🌐 APIs Used
 
 All free, no API keys required:
 
 | API | What it provides |
-|-----|-----------------|
+|:----|:-----------------|
 | [npm Registry](https://registry.npmjs.org) | Package existence, versions, metadata, search |
 | [npm Downloads API](https://api.npmjs.org) | Weekly download counts |
 | [OSV.dev](https://osv.dev) | Open source vulnerability database (Google) |
@@ -267,7 +353,7 @@ All free, no API keys required:
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 depshield-mcp/
@@ -297,14 +383,14 @@ depshield-mcp/
 
 ---
 
-## Requirements
+## 📋 Requirements
 
-- Node.js 18 or later (uses native `fetch`)
+- **Node.js 18** or later (uses native `fetch`)
 - An MCP-compatible AI coding tool
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome. Please open an issue first to discuss what you'd like to change.
 
@@ -316,10 +402,18 @@ Areas where help would be appreciated:
 
 ---
 
-## License
+## 📄 License
 
 MIT — see [LICENSE](LICENSE) for details.
 
 ---
 
-Built by [Devansh Karia](https://github.com/devanshkaria88). Originally created at the Cursor London Evening Hackathon, April 2026.
+<p align="center">
+  Built by <a href="https://github.com/devanshkaria88">Devansh Karia</a>
+</p>
+
+<p align="center">
+  <a href="https://buymeacoffee.com/devanshkaria88">
+    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=devanshkaria88&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" alt="Buy Me A Coffee" />
+  </a>
+</p>
